@@ -1,7 +1,6 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect } from 'react'
 import './home-page.css'
+import Cookies from 'js-cookie';
 import { Box, Button, Flex,  Input } from '@chakra-ui/react';
 
 function App() {
@@ -9,6 +8,7 @@ function App() {
   const [showInput, setShowInput] = useState(false);
   const [currentName, setCurrentName] = useState('');
   const [currentScore, setCurrentScore] = useState('');
+
   const handleAddPlayer = () => {
     setShowInput(true);
   
@@ -45,12 +45,13 @@ function App() {
     });
   };
 
+  const highestScorePlayer = Object.keys(players).reduce((a, b) => players[a] > players[b] ? a : b, '');
   return (
     <Box alignItems="center"  justifyContent="center" display="flex" flexDirection="column">
       
 
       
-      <Button mb =  '5%'w = '150%'>
+      <Button size="lg" mb =  '5%'w = '150%'>
         Seattle Dominos
       </Button>
       {showInput && (
@@ -62,14 +63,14 @@ function App() {
       {Object.entries(players).map(([name, score], index) => (
         <Box mb={2} key={index}>
 
-        <Button  onClick={() => handleDecreaseScore(name)} mr = {2} >-5</Button>
-        <Button  disabled>
+        <Button size="lg" onClick={() => handleDecreaseScore(name)} mr = {2} >-5</Button>
+        <Button size="lg" disabled colorScheme={name === highestScorePlayer && score > 0 ? "green" : "gray"}>
           {name + "  |  " + score }
         </Button>
-        <Button  onClick={() => handleIncreaseScore(name)} ml = {2}>+5</Button>
+        <Button size="lg" onClick={() => handleIncreaseScore(name)} ml = {2}>+5</Button>
         </Box>
       ))}
-      <Button onClick={handleAddPlayer}>
+      <Button size="lg" onClick={handleAddPlayer}>
         Add Player
       </Button>
       
